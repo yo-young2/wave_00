@@ -50,8 +50,7 @@ app.get('/list',function(req,res){
     var list = '<ul>'
     var i =0;
     while(i<filelist.length){
-      //list = list + `<li><a href="./donwloads/${filelist[i]}" download>${filelist[i]}</a></li>`;
-      list = list + `<li><a href="http://localhost:3000/list/${filelist[i]}" download>${filelist[i]}</a></li>`;
+      list = list + `<li><a href="./list/${filelist[i]}" download>${filelist[i]}</a></li>`;
       i = i+1;
     }
     list = list + '<ul>'
@@ -74,13 +73,12 @@ app.get('/upload',function(req,res){
     res.render('upload');
 });
 app.post('/upload',  upload.single('userfile'), function(req,res){
-  //res.send('Uploaded : '+req.file.filename);
   excelsort();
   fs.readdir(folder, function(err, filelist){
     var list = '<ul>'
     var i =0;
     while(i<filelist.length){
-      list = list + `<li><a href="./list/${filelist[i]}" download>${filelist[i]}</a></li>`;
+      list = list + `<li><a href="https://port-0-wave-00-dihik2mliiebw85.sel4.cloudtype.app/list/${filelist[i]}" download>${filelist[i]}</a></li>`;
       i = i+1;
     }
     list = list + '<ul>'
@@ -148,8 +146,7 @@ var day = String(Now.getDate()).padStart(2,'0');
 var month = String(Now.getMonth()+1).padStart(2,'0');
 var Year = Now.getFullYear();
 var FileDate = Year+month+day;
-var FilePath = 'list/OUTPUT_'+FileDate+'.xlsx';
+var FilePath = './list/OUTPUT_'+FileDate+'.xlsx';
 xlsx.utils.book_append_sheet(store_excel,outJson);
-xlsx.writeFile(store_excel,FilePath); 
-//res.send(store_excel)
-}
+xlsx.writeFile(store_excel,FilePath);
+} 
