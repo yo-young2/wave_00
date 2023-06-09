@@ -146,7 +146,8 @@ var day = String(Now.getDate()).padStart(2,'0');
 var month = String(Now.getMonth()+1).padStart(2,'0');
 var Year = Now.getFullYear();
 var FileDate = Year+month+day;
-var FilePath = './list/OUTPUT_'+FileDate+'.xlsx';
+var FilePath = '../../../OUTPUT_'+FileDate+'.xlsx';
+//var FilePath = './list/OUTPUT_'+FileDate+'.xlsx';
 xlsx.utils.book_append_sheet(store_excel,outJson);
 xlsx.writeFile(store_excel,FilePath);
 } 
