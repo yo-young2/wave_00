@@ -1,0 +1,121 @@
+const {excelsort} = require('./excel');
+// const {dateFormet} = require('./date');
+const multer = require('multer');
+const express = require('express');
+const moment =  require('moment');
+const router = express.Router();
+const fs = require('fs');
+const path = require('path');
+const http = require('http');
+const multiparty = require('multiparty');
+const bodyParser = require('body-parser');
+const { Console } = require('console');
+const app = express();
+const port = 3000;
+const folder = './list/';
+const day = new Date();
+
+app.set('view engine', 'jade');
+app.set('views', './views'); 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/list',express.static(path.join(__dirname, 'list')));
+app.locals.pretty = true;
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'order/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, 'input.xlsx');
+    }
+  });
+  const upload = multer({ storage: storage });
+
+app.get('/', function(req, res){
+  var template = `
+  <!doctype html>
+  <html>
+    <head>
+      <title>FILELIST</title>
+      <meta charset = "utf-8">
+    </head>
+    <body>
+      <h1>엑셀변환 매크로</h1>
+      <a href="/upload">엑셀 변환하기</a>
+      <br>
+      <a href="/list">엑셀변환 완료목록</a>
+      <br>
+      </body>
+  </html>`;
+  res.end(template);
+});
+app.listen(port,function(){
+  console.log(`Example app listening on port ${port}`);
+});
+app.get('/list',function(req,res){
+    res.render('list');
+});
+router.get('/list',function(req,res){});
+app.post('/list', function(req,res){
+    var comDate = moment(req.body.userdate).format("YYYYMMDD");
+    fs.readdir(folder, function(err, filelist){
+    var list = '<ul>'
+    var i =0;
+    var j =0;
+    while(i<filelist.length){
+        var name = String(filelist[i]);
+        console.log(name);
+        if(name.includes(comDate))
+            list = list + `<li><a href="./list/${filelist[i]}" download>${filelist[i]}</a></li>`;
+        else
+            j++;
+        i = i+1;
+    }
+    if(filelist.length==j)
+        list = '일치항목 없음';
+    list = list + '<ul>'
+    var template = `
+    <!doctype html>
+    <html>
+      <head>
+        <title>FILELIST</title>
+        <meta charset = "utf-8">
+      </head>
+      <body>
+        <h1>완료 목록</h1>
+        ${list}
+      </body>
+    </html>`;
+    res.end(template);
+  })
+});
+app.get('/upload',function(req,res){
+    res.render('upload');
+});
+router.get('/upload',function(req,res){});
+app.post('/upload', upload.single('userfile'), function(req,res){
+  excelsort();
+  fs.readdir(folder, function(err, filelist){
+    var list = '<ul>'
+    var i =0;
+    while(i<filelist.length){
+      list = list + `<li><a href="./list/${filelist[i]}" download>${filelist[i]}</a></li>`;
+      i = i+1;
+    }
+    list = list + '<ul>'
+    var template = `
+    <!doctype html>
+    <html>
+      <head>
+        <title>FILELIST</title>
+        <meta charset = "utf-8">
+      </head>
+      <body>
+        <h1>완료 목록</h1>
+        ${list}
+      </body>
+    </html>`;
+    res.end(template);
+  });
+});
