@@ -58,23 +58,29 @@ app.get('/list',function(req,res){
 });
 router.get('/list',function(req,res){});
 app.post('/list', function(req,res){
-    var comDate = moment(req.body.userdate).format("YYYYMMDD");
     fs.readdir(folder, function(err, filelist){
-    var list = '<ul>'
-    var i =0;
-    var j =0;
-    while(i<filelist.length){
-        var name = String(filelist[i]);
-        console.log(name);
-        if(name.includes(comDate))
+        var list = '<ul>';
+        var i =0;
+        if(req.body.userdate==''){
+            while(i<filelist.length){
             list = list + `<li><a href="./list/${filelist[i]}" download>${filelist[i]}</a></li>`;
-        else
-            j++;
-        i = i+1;
-    }
-    if(filelist.length==j)
-        list = '일치항목 없음';
-    list = list + '<ul>'
+            i = i+1;
+            }
+        }
+        else{
+            var comDate = moment(req.body.userdate).format("YYYYMMDD");
+            var j =0;
+            while(i<filelist.length){
+                var name = String(filelist[i]);
+                if(name.includes(comDate))
+                    list = list + `<li><a href="./list/${filelist[i]}" download>${filelist[i]}</a></li>`;
+                else
+                    j++;
+                i = i+1;
+            if(filelist.length==j)
+                list = '일치항목 없음';
+        }}
+    list = list + '<ul>';
     var template = `
     <!doctype html>
     <html>
@@ -88,7 +94,7 @@ app.post('/list', function(req,res){
       </body>
     </html>`;
     res.end(template);
-  })
+  });
 });
 app.get('/upload',function(req,res){
     res.render('upload');
