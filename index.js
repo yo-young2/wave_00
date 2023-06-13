@@ -12,7 +12,7 @@ const bodyParser = require('body-parser');
 const { Console } = require('console');
 const app = express();
 const port = 3000;
-const folder = './list/';
+const folder = './list';
 const day = new Date();
 
 app.set('view engine', 'jade');
@@ -24,7 +24,7 @@ app.use('/list',express.static(path.join(__dirname, 'list')));
 app.locals.pretty = true;
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'order/');
+      cb(null, 'cache/');
     },
     filename: function (req, file, cb) {
       cb(null, 'input.xlsx');
@@ -58,14 +58,45 @@ app.get('/list',function(req,res){
 });
 router.get('/list',function(req,res){});
 app.post('/list', function(req,res){
+    if(req.body.userdate!='' && req.body.filename!=undefined){
+        fs.unlinkSync(`./list/${req.body.filename}`, function(req,res){});
+        fs.readdir(folder, function(err, filelist){
+        var list = '<ul>';
+        var i =0;
+        list = list + `<form action='../list' method='post'>`;
+        while(i<filelist.length){
+            list = list + `<input type='checkbox' name='filename' value='${filelist[i]}'/><a href="./list/${filelist[i]}" download>${filelist[i]}</a><br>`;
+            i = i+1;};
+        list = list + `<input type='submit'></input>`;        
+        var template = `
+        <!doctype html>
+        <html>
+          <head>
+            <title>FILELIST</title>
+            <meta charset = "utf-8">
+          </head>
+          <body>
+            <h1>완료 목록</h1>
+            ${list}
+            </form>
+            <button onclick="location.href='../'">처음</button>
+            <ul>
+          </body>
+        </html>`;
+        res.end(template);
+      });
+    }
+    else{
     fs.readdir(folder, function(err, filelist){
         var list = '<ul>';
         var i =0;
         if(req.body.userdate==''){
+            list = list + `<form action='../list' method='post'>`;
             while(i<filelist.length){
-            list = list + `<li><a href="./list/${filelist[i]}" download>${filelist[i]}</a></li>`;
+            list = list + `<input type='checkbox' name='filename' value='${filelist[i]}'/><a href="./list/${filelist[i]}" download>${filelist[i]}</a><br>`;
             i = i+1;
             }
+            list = list + `<input type='submit'></input>`;
         }
         else{
             var comDate = moment(req.body.userdate).format("YYYYMMDD");
@@ -80,7 +111,6 @@ app.post('/list', function(req,res){
             if(filelist.length==j)
                 list = '일치항목 없음';
         }}
-    list = list + '<ul>';
     var template = `
     <!doctype html>
     <html>
@@ -91,10 +121,12 @@ app.post('/list', function(req,res){
       <body>
         <h1>완료 목록</h1>
         ${list}
+        </form>
+        <button onclick="location.href='../'">처음</button><ul>
       </body>
     </html>`;
     res.end(template);
-  });
+  });};
 });
 app.get('/upload',function(req,res){
     res.render('upload');
@@ -109,7 +141,7 @@ app.post('/upload', upload.single('userfile'), function(req,res){
       list = list + `<li><a href="./list/${filelist[i]}" download>${filelist[i]}</a></li>`;
       i = i+1;
     }
-    list = list + '<ul>'
+    list = list + `<button onclick="location.href='../'">처음</button><ul>`;
     var template = `
     <!doctype html>
     <html>

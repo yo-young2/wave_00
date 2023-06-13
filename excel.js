@@ -5,7 +5,7 @@ const xlsx = require('xlsx');
 const folder = './list/';
 
 function excelsort(){
-const excelFile = xlsx.readFile("order/input.xlsx");
+const excelFile = xlsx.readFile("cache/input.xlsx");
 const sheetName = excelFile.SheetNames[0];
 const sheetData = excelFile.Sheets[sheetName];
 
@@ -21,8 +21,7 @@ for(let i=0;i<j+1;i++){
         if(float==0){
             for(order_number;order_number>1;order_number--){
                 let createNumber = Number(jsonData[i].거래처코드)*10000000000 + Number(jsonData[i].품목코드)*10000+checksum;
-                //let createbarcode = Number(jsonData[i].거래일)*100000 + checksum;
-                let barcode = Number(createNumber)//+Number(createbarcode);
+                let barcode = Number(createNumber)
                 let Value = {"거래처명" : jsonData[i].거래처명, "거래처코드" : jsonData[i].거래처코드, "프로젝트" : jsonData[i].프로젝트, "제조사":jsonData[i].제조사,"지역이름":jsonData[i].지역이름,"제품명":jsonData[i].제품명,"품목코드":jsonData[i].품목코드,"바코드":Number(barcode),"규격":jsonData[i].규격,"수량":1,"비고": jsonData[i].비고}
                 result.push(Value);
                 checksum++;
@@ -31,8 +30,7 @@ for(let i=0;i<j+1;i++){
         else if(float!=0){
             for(order_number;order_number>1;order_number--){
             let createNumber = Number(jsonData[i].거래처코드)*10000000000 + Number(jsonData[i].품목코드)*10000+checksum;
-            //let createbarcode = Number(jsonData[i].거래일)*100000 + checksum;
-            let barcode = Number(createNumber)//+Number(createbarcode);
+            let barcode = Number(createNumber)
             let Value = {"거래처명" : jsonData[i].거래처명, "거래처코드" : jsonData[i].거래처코드, "프로젝트" : jsonData[i].프로젝트, "제조사":jsonData[i].제조사,"지역이름":jsonData[i].지역이름,"제품명":jsonData[i].제품명,"품목코드":jsonData[i].품목코드,"바코드":Number(barcode),"규격":jsonData[i].규격,"수량":1,"비고": jsonData[i].비고}
             result.push(Value);
             checksum++;
