@@ -1,4 +1,4 @@
-const {homeview,generate_pdf,uploadview,ljuploadview,listsview} = require('../controllers/homeController');
+const {homeview,generate_pdf,uploadview,ljuploadview,listsview} = require('../controllers/homecontroller');
 // import listsview from "listsview";
 // import LJuploadview from "LJuploadview"
 // import uploadview from "uploadview";
