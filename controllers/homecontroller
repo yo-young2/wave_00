@@ -18,7 +18,7 @@ const listsview = function (req, res) {
 };
 
 
-const generatePdf = async (req, res, next) => {
+const generate_pdf = async (req, res, next) => {
     const html = fs.readFileSync(path.join(__dirname, '../labelforms/Dodam_label.html'), 'utf-8');
     var Now = new Date();
     var day = String(Now.getDate()).padStart(2, '0');
@@ -72,5 +72,5 @@ const generatePdf = async (req, res, next) => {
 exports.ljuploadview = ljuploadview;
 exports.uploadview = uploadview;
 exports.homeview = homeview;
-exports.generatePdf = generatePdf;
+exports.generate_pdf = generate_pdf;
 exports.listsview = listsview;
