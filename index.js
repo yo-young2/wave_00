@@ -151,7 +151,7 @@ app.post('/upload', upload.single('userfile'), function (req, res) {
 });
 
 app.post('/upload_LJ', upload_LJ.single('userfile'), function (req, res) {
-  excelsort_LJ();
+  excelsort_lj();
   fs.readdir('./list/list_LJ', function (err, filelist) {
     var list = '<ul>'
     var i = 0;
