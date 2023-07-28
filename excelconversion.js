@@ -52,7 +52,7 @@ function excelsort() {
   xlsx.writeFile(store_excel, FilePath);
 };
 
-function excelsort_LJ() {
+function excelsort_lj() {
   const excelFile = xlsx.readFile("cache/input_LJ.xlsx");
   const sheetName = excelFile.SheetNames[0];
   
@@ -94,5 +94,5 @@ function excelsort_LJ() {
 
 module.exports = {
   excelsort,
-  excelsort_LJ
+  excelsort_lj
 }

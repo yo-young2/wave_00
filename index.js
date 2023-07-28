@@ -1,4 +1,6 @@
-const { excelsort, excelsort_LJ } = require('./excelconversion');
+const { excelsort, excelsort_lj } = require('./excelconversion');
+// import excelsort from "excelsort";
+// import excelsort_LJ from "excelsort_LJ";
 //const {dateFormet} = require('./date');
 const multer = require('multer');
 const express = require('express');
