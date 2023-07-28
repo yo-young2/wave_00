@@ -1,0 +1,70 @@
+const fs = require('fs');
+const path = require('path');
+const pdf = require('pdf-creator-node');
+const data = require('../helpers/data');
+const options = require('../helpers/Dodam_options');
+
+const homeview = function (req, res) {
+    res.render('home');
+}
+const uploadview = function (req, res) {
+    res.render('upload');
+};
+const LJuploadview = function (req, res) {
+    res.render('upload_LJ');
+};
+const listsview = function (req, res) {
+    res.render('list');
+};
+
+
+const generatePdf = async (req, res, next) => {
+    const html = fs.readFileSync(path.join(__dirname, '../labelforms/Dodam_label.html'), 'utf-8');
+    var Now = new Date();
+    var day = String(Now.getDate()).padStart(2, '0');
+    var month = String(Now.getMonth() + 1).padStart(2, '0');
+    var Year = Now.getFullYear();
+    var FileDate = Year + month + day;
+    const filename = FileDate + '_dodam' + '.pdf';
+    let array = [];
+
+    data.forEach(d => {
+        const prod = {
+            target: d.target,
+            school: d.school,
+            name: d.name,
+            unit: d.unit,
+            quantity: d.quantity,
+            box: d.box,
+            special: d.special,
+            imgurl: d.imgurl,
+            date: d.date
+        }
+        array.push(prod);
+    });
+    const document = {
+        html: html,
+        data: {
+            products: array
+        },
+        path: './docs/' + filename
+    }
+    console.log(document.data.products)
+    pdf.create(document,options)
+        .then(res => {
+            console.log(res);
+        }).catch(error => {
+            console.log(error);
+        });
+    const filepath = './docs/' + filename;
+    res.render('download', {
+        path: filepath
+    });
+}
+module.exports = {
+    homeview,
+    LJuploadview,
+    uploadview,
+    listsview,
+    generatePdf
+}

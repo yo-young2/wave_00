@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DODAM</title>
+    
+</head>
+<body>
+    {{#each products}}
+    <table width=400 height=360 border="2" bgcolor="white" bordercolor="black" cellspacing="0" cellpadding="5">
+        <tr height=42>
+            <td width=80 align="center" style="font-size: 22px;font-weight: 1000; color: black; margin-top: 10px;">입고처</td><td colspan="3" style="font-size: 22px;font-weight: 450; color: black; margin-top: 10px;">{{this.target}}</td>
+        </tr>
+        <tr height=42>
+            <th width=80 align="center" style="font-size: 22px;font-weight: 1000; color: black; margin-top: 10px;">학 교</th><td width=275 colspan="2">{{this.school}}</td><td width=54>냉동</td>
+        </tr>
+        <tr height=42>
+            <th width=80 align="center" style="font-size: 22px;font-weight: 1000; color: black; margin-top: 10px;">제품명</th><td colspan="3">{{this.name}}</td>
+        </tr>
+        <tr height=42>
+            <th width=80 align="center" style="font-size: 22px;font-weight: 1000; color: black; margin-top: 10px;">규 격</th><td colspan="3">{{this.unit}}</td>
+        </tr>
+        <tr height=42>
+            <th width=80 align="center" style="font-size: 22px;font-weight: 1000; color: black; margin-top: 10px;">수 량</th><td width=140>{{this.quantity}}</td><th width=70 align="center" style="font-size: 16px;font-weight: 1000; color: black; margin-top: 10px;">박스수량</th><td align="center">{{this.box}}</td>
+        </tr>
+        <tr height=42>
+            <th width=80 align="center" style="font-size: 17px;font-weight: 1000; color: black; margin-top: 10px;">특이사항</th><td colspan="3">{{this.special}}</td>
+        </tr>
+        <tr height=43>
+            <td colspan="2" rowspan="2"></td><td colspan="2" bordercolor=white align="center" style="font-size: 24px;font-weight: 1000; color: black; margin-top: 10px;">급식일</td>
+        </tr>
+        <tr height=43>
+            <td colspan="2" bordercolor="white" align="center" style="font-size: 18px;font-weight: 1000; color: black; margin-top: 10px;">{{this.date}}</td>
+        </tr>
+    </table> 
+    {{/each}}
+</body>
+</html>
+
