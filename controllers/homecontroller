@@ -10,7 +10,7 @@ const homeview = function (req, res) {
 const uploadview = function (req, res) {
     res.render('upload');
 };
-const LJuploadview = function (req, res) {
+const ljuploadview = function (req, res) {
     res.render('upload_LJ');
 };
 const listsview = function (req, res) {
@@ -61,7 +61,15 @@ const generatePdf = async (req, res, next) => {
         path: filepath
     });
 }
-exports.LJuploadview = LJuploadview;
+// module.exports = {
+//     homeview,
+//     LJuploadview,
+//     uploadview,
+//     listsview,
+//     generatePdf
+// }
+
+exports.ljuploadview = ljuploadview;
 exports.uploadview = uploadview;
 exports.homeview = homeview;
 exports.generatePdf = generatePdf;
