@@ -61,10 +61,8 @@ const generatePdf = async (req, res, next) => {
         path: filepath
     });
 }
-module.exports = {
-    homeview,
-    LJuploadview,
-    uploadview,
-    listsview,
-    generatePdf
-}
+exports.LJuploadview = LJuploadview;
+exports.uploadview = uploadview;
+exports.homeview = homeview;
+exports.generatePdf = generatePdf;
+exports.listsview = listsview;
